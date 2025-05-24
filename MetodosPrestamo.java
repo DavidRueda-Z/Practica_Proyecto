@@ -63,4 +63,71 @@ public class MetodosPrestamo {
 
         JOptionPane.showMessageDialog(null, "¡Préstamo registrado exitosamente!");
     }
+
+    public static void modificarPrestamoIngeniero(ArrayList<EstudianteIngenieria> vectorIngenieros) {
+        String[] opcionesBusqueda = { "Cédula", "Serial" };
+        String seleccion = (String) JOptionPane.showInputDialog(null, "Buscar por:", "Modificar",
+                JOptionPane.QUESTION_MESSAGE, null, opcionesBusqueda, opcionesBusqueda[0]);
+
+        EstudianteIngenieria encontrado = null;
+
+        if (seleccion.equals("Cédula")) {
+            String cedula = JOptionPane.showInputDialog("Ingrese la cédula del estudiante:");
+            for (EstudianteIngenieria e : vectorIngenieros) {
+                if (e.getCedula().equalsIgnoreCase(cedula)) {
+                    encontrado = e;
+                    break;
+                }
+            }
+        } else {
+            String serial = JOptionPane.showInputDialog("Ingrese el serial del equipo:");
+            for (EstudianteIngenieria e : vectorIngenieros) {
+                if (e.getSerial().equalsIgnoreCase(serial)) {
+                    encontrado = e;
+                    break;
+                }
+            }
+        }
+
+        if (encontrado == null) {
+            JOptionPane.showMessageDialog(null, "Estudiante no encontrado.");
+            return;
+        }
+
+        boolean continuar = true;
+        while (continuar) {
+            String[] opcionesMod = { "Nombre", "Apellido", "Teléfono", "Semestre", "Promedio", "Salir" };
+            String opcion = (String) JOptionPane.showInputDialog(null, "¿Qué desea modificar?", "Modificar datos",
+                    JOptionPane.QUESTION_MESSAGE, null, opcionesMod, opcionesMod[0]);
+
+            switch (opcion) {
+                case "Nombre":
+                    String nuevoNombre = JOptionPane.showInputDialog("Nuevo nombre:");
+                    encontrado.setNombre(nuevoNombre);
+                    break;
+                case "Apellido":
+                    String nuevoApellido = JOptionPane.showInputDialog("Nuevo apellido:");
+                    encontrado.setApellido(nuevoApellido);
+                    break;
+                case "Teléfono":
+                    String nuevoTelefono = JOptionPane.showInputDialog("Nuevo teléfono:");
+                    encontrado.setTelefono(nuevoTelefono);
+                    break;
+                case "Semestre":
+                    int nuevoSemestre = Integer.parseInt(JOptionPane.showInputDialog("Nuevo semestre:"));
+                    encontrado.setSemestre(nuevoSemestre);
+                    break;
+                case "Promedio":
+                    float nuevoPromedio = Float.parseFloat(JOptionPane.showInputDialog("Nuevo promedio:"));
+                    encontrado.setPromedio(nuevoPromedio);
+                    break;
+                case "Salir":
+                    continuar = false;
+                    break;
+            }
+        }
+
+        JOptionPane.showMessageDialog(null, "Datos actualizados correctamente.");
+    }
+
 }
