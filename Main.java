@@ -3,9 +3,8 @@ import javax.swing.JOptionPane;
 
 public class Main {
     public static void main(String[] args) {
-
-        // Igualmente deberías tener los otros vectores, como vectorDisenadores,
-        // vectorPortatil, etc.
+        // Importación automática al iniciar
+        MetodosPrestamo.importarDatos();
 
         boolean continuar = true;
 
@@ -14,15 +13,16 @@ public class Main {
                     "1. Estudiantes de Ingeniería",
                     "2. Estudiantes de Diseño",
                     "3. Imprimir Inventario Total",
-                    "4. Salir"
+                    "4. Salir (exportar automáticamente)",
+                    "5. Exportar datos manualmente",
+                    "6. Importar datos manualmente"
             };
+
             String seleccion = (String) JOptionPane.showInputDialog(null, "Menú Principal", "Seleccione una opción",
                     JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
 
-            if (seleccion == null || seleccion.equals("4. Salir")) {
-                continuar = false;
+            if (seleccion == null)
                 continue;
-            }
 
             switch (seleccion) {
                 case "1. Estudiantes de Ingeniería":
@@ -104,8 +104,20 @@ public class Main {
                             MetodosPrestamo.vectorDisenadores,
                             MetodosPrestamo.vectorTabletas);
                     break;
+
+                case "4. Salir (exportar automáticamente)":
+                    MetodosPrestamo.exportarDatos();
+                    continuar = false;
+                    break;
+
+                case "5. Exportar datos manualmente":
+                    MetodosPrestamo.exportarDatos();
+                    break;
+
+                case "6. Importar datos manualmente":
+                    MetodosPrestamo.importarDatos();
+                    break;
             }
         }
     }
-
 }

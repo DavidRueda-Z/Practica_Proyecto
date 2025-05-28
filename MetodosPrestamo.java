@@ -1,4 +1,5 @@
 import javax.swing.JOptionPane;
+import java.io.*;
 import java.util.ArrayList;
 
 public class MetodosPrestamo {
@@ -33,10 +34,8 @@ public class MetodosPrestamo {
             }
         } while (promedio < 0 || promedio > 5);
 
-        // 3. Solicitar datos del computador portátil
         String serial = JOptionPane.showInputDialog("Ingrese el serial del equipo:");
 
-        // Validar que el serial no exista
         for (ComputadorPortatil comp : vectorPortatiles) {
             if (comp.getSerial().equals(serial)) {
                 JOptionPane.showMessageDialog(null, "Ese serial ya está registrado.");
@@ -45,28 +44,30 @@ public class MetodosPrestamo {
         }
 
         String marca = JOptionPane.showInputDialog("Ingrese la marca:");
-        float tamaño = Float.parseFloat(JOptionPane.showInputDialog("Ingrese el tamaño en pulgadas:"));
+
+        float tamaño;
+        do {
+            tamaño = Float.parseFloat(JOptionPane.showInputDialog("Ingrese el tamaño en pulgadas:"));
+            if (tamaño > 32) {
+                JOptionPane.showMessageDialog(null, "El tamaño máximo permitido es 32 pulgadas.");
+            }
+        } while (tamaño > 32);
+
         float precio = Float.parseFloat(JOptionPane.showInputDialog("Ingrese el precio:"));
 
-        // Submenú sistema operativo
-        // Defino las opciones
         String[] soOpciones = { "Windows 7", "Windows 10", "Windows 11" };
         String sistemaOperativo = (String) JOptionPane.showInputDialog(null, "Seleccione sistema operativo:",
                 "Sistema Operativo", JOptionPane.QUESTION_MESSAGE, null, soOpciones, soOpciones[0]);
-
-        // Submenú procesador
 
         String[] procesadores = { "AMD Ryzen", "Intel® Core™ i5" };
         String procesador = (String) JOptionPane.showInputDialog(null, "Seleccione procesador:",
                 "Procesador", JOptionPane.QUESTION_MESSAGE, null, procesadores, procesadores[0]);
 
-        // 4. Crear objetos
         ComputadorPortatil nuevoEquipo = new ComputadorPortatil(serial, marca, tamaño, precio, sistemaOperativo,
                 procesador);
         EstudianteIngenieria nuevoEstudiante = new EstudianteIngenieria(cedula, nombre, apellido, telefono, semestre,
                 promedio, serial);
 
-        // 5. Agregar a los vectores
         vectorIngenieros.add(nuevoEstudiante);
         vectorPortatiles.add(nuevoEquipo);
 
@@ -81,8 +82,7 @@ public class MetodosPrestamo {
 
         StringBuilder inventario = new StringBuilder("======= INVENTARIO TOTAL =======\n\n");
 
-        // Estudiantes de Ingeniería
-        inventario.append("🧑‍💻 Estudiantes de Ingeniería con préstamo:\n\n");
+        inventario.append("Estudiantes de Ingeniería con préstamo:\n\n");
         if (vectorIngenieros.isEmpty()) {
             inventario.append("No hay estudiantes con préstamos registrados.\n\n");
         } else {
@@ -94,8 +94,7 @@ public class MetodosPrestamo {
             }
         }
 
-        // Equipos portátiles
-        inventario.append("\n💻 Equipos Portátiles Registrados:\n\n");
+        inventario.append("\nEquipos Portátiles Registrados:\n\n");
         if (vectorPortatiles.isEmpty()) {
             inventario.append("No hay portátiles registrados.\n");
         } else {
@@ -105,7 +104,6 @@ public class MetodosPrestamo {
                 inventario.append("Sistema Operativo: ").append(pc.getSistemaOperativo()).append("\n");
                 inventario.append("Procesador: ").append(pc.getProcesador()).append("\n");
 
-                // ¿Está asignado?
                 String cedulaVinculada = "Libre";
                 for (EstudianteIngenieria e : vectorIngenieros) {
                     if (e.getSerial().equalsIgnoreCase(pc.getSerial())) {
@@ -120,7 +118,7 @@ public class MetodosPrestamo {
         }
 
         // Estudiantes de Diseño
-        inventario.append("\n🎨 Estudiantes de Diseño con préstamo:\n\n");
+        inventario.append("\nEstudiantes de Diseño con préstamo:\n\n");
         if (vectorDisenadores.isEmpty()) {
             inventario.append("No hay estudiantes con préstamos registrados.\n\n");
         } else {
@@ -135,7 +133,7 @@ public class MetodosPrestamo {
         }
 
         // Tabletas gráficas
-        inventario.append("\n📱 Tabletas Gráficas Registradas:\n\n");
+        inventario.append("\nTabletas Gráficas Registradas:\n\n");
         if (vectorTabletas.isEmpty()) {
             inventario.append("No hay tabletas registradas.\n");
         } else {
@@ -329,10 +327,19 @@ public class MetodosPrestamo {
         String nombre = JOptionPane.showInputDialog("Ingrese el nombre:");
         String apellido = JOptionPane.showInputDialog("Ingrese el apellido:");
         String telefono = JOptionPane.showInputDialog("Ingrese el teléfono:");
-        String modalidad = JOptionPane.showInputDialog("Modalidad (Presencial o Virtual):");
-        int asignaturas = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de asignaturas:"));
 
-        // Serial único del equipo (tableta)
+        String[] modalidades = { "Presencial", "Virtual" };
+        String modalidad = (String) JOptionPane.showInputDialog(null, "Seleccione modalidad:",
+                "Modalidad", JOptionPane.QUESTION_MESSAGE, null, modalidades, modalidades[0]);
+
+        int asignaturas;
+        do {
+            asignaturas = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de asignaturas:"));
+            if (asignaturas > 8) {
+                JOptionPane.showMessageDialog(null, "No es posible tener más de 8 materias por semestre.");
+            }
+        } while (asignaturas > 8);
+
         int serialEquipo = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el serial del equipo (número):"));
 
         for (TabletaGrafica t : vectorTabletas) {
@@ -344,7 +351,15 @@ public class MetodosPrestamo {
 
         String serial = String.valueOf(serialEquipo);
         String marca = JOptionPane.showInputDialog("Ingrese la marca:");
-        float tamaño = Float.parseFloat(JOptionPane.showInputDialog("Ingrese el tamaño en pulgadas:"));
+
+        float tamaño;
+        do {
+            tamaño = Float.parseFloat(JOptionPane.showInputDialog("Ingrese el tamaño en pulgadas:"));
+            if (tamaño > 32) {
+                JOptionPane.showMessageDialog(null, "El tamaño máximo permitido es 32 pulgadas.");
+            }
+        } while (tamaño > 32);
+
         float precio = Float.parseFloat(JOptionPane.showInputDialog("Ingrese el precio:"));
 
         String[] opcionesAlmacenamiento = { "256 GB", "512 GB", "1 TB" };
@@ -352,9 +367,14 @@ public class MetodosPrestamo {
                 "Almacenamiento", JOptionPane.QUESTION_MESSAGE, null, opcionesAlmacenamiento,
                 opcionesAlmacenamiento[0]);
 
-        float peso = Float.parseFloat(JOptionPane.showInputDialog("Ingrese el peso en kg:"));
+        float peso;
+        do {
+            peso = Float.parseFloat(JOptionPane.showInputDialog("Ingrese el peso en kg:"));
+            if (peso > 10) {
+                JOptionPane.showMessageDialog(null, "El peso máximo permitido es 10 kg.");
+            }
+        } while (peso > 10);
 
-        // Crear objetos
         TabletaGrafica nuevaTableta = new TabletaGrafica(serial, marca, tamaño, precio, almacenamiento, peso);
         EstudianteDiseno nuevoEstudiante = new EstudianteDiseno(cedula, nombre, apellido, telefono, modalidad,
                 asignaturas, serialEquipo);
@@ -512,4 +532,141 @@ public class MetodosPrestamo {
             JOptionPane.showMessageDialog(null, mensaje);
         }
     }
+
+    public static void exportarDatos() {
+        try {
+            // === Exportar estudiantes de ingeniería ===
+            PrintWriter pwIng = new PrintWriter(new FileWriter("ingenieria.txt"));
+            for (EstudianteIngenieria e : vectorIngenieros) {
+                pwIng.println(
+                        e.getCedula() + "|" + e.getNombre() + "|" + e.getApellido() + "|" + e.getTelefono() + "|" +
+                                e.getSemestre() + "|" + e.getPromedio() + "|" + e.getSerial());
+            }
+            pwIng.close();
+
+            // === Exportar portátiles ===
+            PrintWriter pwPc = new PrintWriter(new FileWriter("portatiles.txt"));
+            for (ComputadorPortatil pc : vectorPortatiles) {
+                pwPc.println(pc.getSerial() + "|" + pc.getMarca() + "|" + pc.getTamaño() + "|" +
+                        pc.getPrecio() + "|" + pc.getSistemaOperativo() + "|" + pc.getProcesador());
+            }
+            pwPc.close();
+
+            // === Exportar estudiantes de diseño ===
+            PrintWriter pwDiseno = new PrintWriter(new FileWriter("diseno.txt"));
+            for (EstudianteDiseno e : vectorDisenadores) {
+                pwDiseno.println(
+                        e.getCedula() + "|" + e.getNombre() + "|" + e.getApellido() + "|" + e.getTelefono() + "|" +
+                                e.getModalidad() + "|" + e.getCantidadAsignaturas() + "|" + e.getSerial());
+            }
+            pwDiseno.close();
+
+            // === Exportar tabletas gráficas ===
+            PrintWriter pwTab = new PrintWriter(new FileWriter("tabletas.txt"));
+            for (TabletaGrafica t : vectorTabletas) {
+                pwTab.println(t.getSerial() + "|" + t.getMarca() + "|" + t.getTamaño() + "|" +
+                        t.getPrecio() + "|" + t.getAlmacenamiento() + "|" + t.getPeso());
+            }
+            pwTab.close();
+
+            JOptionPane.showMessageDialog(null, "Datos exportados correctamente.");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al exportar: " + e.getMessage());
+        }
+    }
+
+    public static void importarDatos() {
+        try {
+            // Limpiar listas actuales antes de cargar
+            vectorIngenieros.clear();
+            vectorPortatiles.clear();
+            vectorDisenadores.clear();
+            vectorTabletas.clear();
+
+            // === Importar portátiles ===
+            BufferedReader brPc = new BufferedReader(new FileReader("portatiles.txt"));
+            String lineaPc;
+            while ((lineaPc = brPc.readLine()) != null) {
+                String[] datos = lineaPc.split("\\|");
+                if (datos.length == 6) {
+                    ComputadorPortatil pc = new ComputadorPortatil(
+                            datos[0], // serial
+                            datos[1], // marca
+                            Float.parseFloat(datos[2]), // tamaño
+                            Float.parseFloat(datos[3]), // precio
+                            datos[4], // sistema operativo
+                            datos[5] // procesador
+                    );
+                    vectorPortatiles.add(pc);
+                }
+            }
+            brPc.close();
+
+            // === Importar estudiantes de ingeniería ===
+            BufferedReader brIng = new BufferedReader(new FileReader("ingenieria.txt"));
+            String lineaIng;
+            while ((lineaIng = brIng.readLine()) != null) {
+                String[] datos = lineaIng.split("\\|");
+                if (datos.length == 7) {
+                    EstudianteIngenieria e = new EstudianteIngenieria(
+                            datos[0], // cedula
+                            datos[1], // nombre
+                            datos[2], // apellido
+                            datos[3], // telefono
+                            Integer.parseInt(datos[4]), // semestre
+                            Float.parseFloat(datos[5]), // promedio
+                            datos[6] // serial del equipo
+                    );
+                    vectorIngenieros.add(e);
+                }
+            }
+            brIng.close();
+
+            // === Importar tabletas ===
+            BufferedReader brTab = new BufferedReader(new FileReader("tabletas.txt"));
+            String lineaTab;
+            while ((lineaTab = brTab.readLine()) != null) {
+                String[] datos = lineaTab.split("\\|");
+                if (datos.length == 6) {
+                    TabletaGrafica t = new TabletaGrafica(
+                            datos[0], // serial
+                            datos[1], // marca
+                            Float.parseFloat(datos[2]), // tamaño
+                            Float.parseFloat(datos[3]), // precio
+                            datos[4], // almacenamiento
+                            Float.parseFloat(datos[5]) // peso
+                    );
+                    vectorTabletas.add(t);
+                }
+            }
+            brTab.close();
+
+            // === Importar estudiantes de diseño ===
+            BufferedReader brDiseno = new BufferedReader(new FileReader("diseno.txt"));
+            String lineaDis;
+            while ((lineaDis = brDiseno.readLine()) != null) {
+                String[] datos = lineaDis.split("\\|");
+                if (datos.length == 7) {
+                    EstudianteDiseno e = new EstudianteDiseno(
+                            datos[0], // cedula
+                            datos[1], // nombre
+                            datos[2], // apellido
+                            datos[3], // telefono
+                            datos[4], // modalidad
+                            Integer.parseInt(datos[5]), // asignaturas
+                            Integer.parseInt(datos[6]) // serial del equipo
+                    );
+                    vectorDisenadores.add(e);
+                }
+            }
+            brDiseno.close();
+
+            JOptionPane.showMessageDialog(null, "Datos importados correctamente.");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al importar: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Error de formato en archivo: " + e.getMessage());
+        }
+    }
+
 }
