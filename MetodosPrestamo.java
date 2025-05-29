@@ -10,7 +10,7 @@ public class MetodosPrestamo {
     public static ArrayList<TabletaGrafica> vectorTabletas = new ArrayList<>();
 
     public static void registrarPrestamoIngenieria() {
-        // 1. Solicitar cédula y verificar que no exista préstamo previo
+        // Verificar que no exista préstamo previo
         String cedula = JOptionPane.showInputDialog("Ingrese la cédula del estudiante:");
 
         for (EstudianteIngenieria estudiante : vectorIngenieros) {
@@ -20,7 +20,6 @@ public class MetodosPrestamo {
             }
         }
 
-        // 2. Solicitar datos del estudiante
         String nombre = JOptionPane.showInputDialog("Ingrese el nombre:");
         String apellido = JOptionPane.showInputDialog("Ingrese el apellido:");
         String telefono = JOptionPane.showInputDialog("Ingrese el teléfono:");
@@ -54,7 +53,10 @@ public class MetodosPrestamo {
         } while (tamaño > 32);
 
         float precio = Float.parseFloat(JOptionPane.showInputDialog("Ingrese el precio:"));
-
+        // Para disminuir la cantidad de validaciones que tenia que hacer, decidi
+        // limitar la respuesta que el usuario pueda dar
+        // Con una herramienta que me brinda el JOptionPane, que es como una lista de
+        // opciones
         String[] soOpciones = { "Windows 7", "Windows 10", "Windows 11" };
         String sistemaOperativo = (String) JOptionPane.showInputDialog(null, "Seleccione sistema operativo:",
                 "Sistema Operativo", JOptionPane.QUESTION_MESSAGE, null, soOpciones, soOpciones[0]);
@@ -80,6 +82,9 @@ public class MetodosPrestamo {
             ArrayList<EstudianteDiseno> vectorDisenadores,
             ArrayList<TabletaGrafica> vectorTabletas) {
 
+        // Para no estar difiniendo diferentes textos, con el string builder creo una
+        // "variable" que me permita añadirle diferentes tipos de texto
+        // Mientras construyo lo que quiero mostrar
         StringBuilder inventario = new StringBuilder("======= INVENTARIO TOTAL =======\n\n");
 
         inventario.append("Estudiantes de Ingeniería con préstamo:\n\n");
@@ -93,7 +98,8 @@ public class MetodosPrestamo {
                 inventario.append("------------------------------\n");
             }
         }
-
+        // Aqui vemos la variable "inventario" y simplemente con append le agregamos lo
+        // que queremos mostrar
         inventario.append("\nEquipos Portátiles Registrados:\n\n");
         if (vectorPortatiles.isEmpty()) {
             inventario.append("No hay portátiles registrados.\n");
@@ -104,6 +110,9 @@ public class MetodosPrestamo {
                 inventario.append("Sistema Operativo: ").append(pc.getSistemaOperativo()).append("\n");
                 inventario.append("Procesador: ").append(pc.getProcesador()).append("\n");
 
+                // Aunque el progama no lo pide, no quería que el registro de los equipos se
+                // pierda al hacer las devoluciones
+                // Por lo que verifico que el equipo este libre
                 String cedulaVinculada = "Libre";
                 for (EstudianteIngenieria e : vectorIngenieros) {
                     if (e.getSerial().equalsIgnoreCase(pc.getSerial())) {
@@ -535,7 +544,7 @@ public class MetodosPrestamo {
 
     public static void exportarDatos() {
         try {
-            // === Exportar estudiantes de ingeniería ===
+            // Exportar estudiantes de ingeniería
             PrintWriter pwIng = new PrintWriter(new FileWriter("ingenieria.txt"));
             for (EstudianteIngenieria e : vectorIngenieros) {
                 pwIng.println(
@@ -544,7 +553,7 @@ public class MetodosPrestamo {
             }
             pwIng.close();
 
-            // === Exportar portátiles ===
+            // Exportar portátiles
             PrintWriter pwPc = new PrintWriter(new FileWriter("portatiles.txt"));
             for (ComputadorPortatil pc : vectorPortatiles) {
                 pwPc.println(pc.getSerial() + "|" + pc.getMarca() + "|" + pc.getTamaño() + "|" +
@@ -552,7 +561,7 @@ public class MetodosPrestamo {
             }
             pwPc.close();
 
-            // === Exportar estudiantes de diseño ===
+            // Exportar estudiantes de diseño
             PrintWriter pwDiseno = new PrintWriter(new FileWriter("diseno.txt"));
             for (EstudianteDiseno e : vectorDisenadores) {
                 pwDiseno.println(
@@ -561,7 +570,7 @@ public class MetodosPrestamo {
             }
             pwDiseno.close();
 
-            // === Exportar tabletas gráficas ===
+            // Exportar tabletas gráficas
             PrintWriter pwTab = new PrintWriter(new FileWriter("tabletas.txt"));
             for (TabletaGrafica t : vectorTabletas) {
                 pwTab.println(t.getSerial() + "|" + t.getMarca() + "|" + t.getTamaño() + "|" +
@@ -577,13 +586,14 @@ public class MetodosPrestamo {
 
     public static void importarDatos() {
         try {
-            // Limpiar listas actuales antes de cargar
+            // Limpiar listas actuales antes de cargar, para no sobrecargar el archivo txt,
+            // con registros repetidos
             vectorIngenieros.clear();
             vectorPortatiles.clear();
             vectorDisenadores.clear();
             vectorTabletas.clear();
 
-            // === Importar portátiles ===
+            // Importar portátiles
             BufferedReader brPc = new BufferedReader(new FileReader("portatiles.txt"));
             String lineaPc;
             while ((lineaPc = brPc.readLine()) != null) {
@@ -602,7 +612,7 @@ public class MetodosPrestamo {
             }
             brPc.close();
 
-            // === Importar estudiantes de ingeniería ===
+            // Importar estudiantes de ingeniería
             BufferedReader brIng = new BufferedReader(new FileReader("ingenieria.txt"));
             String lineaIng;
             while ((lineaIng = brIng.readLine()) != null) {
@@ -622,7 +632,7 @@ public class MetodosPrestamo {
             }
             brIng.close();
 
-            // === Importar tabletas ===
+            // Importar tabletas
             BufferedReader brTab = new BufferedReader(new FileReader("tabletas.txt"));
             String lineaTab;
             while ((lineaTab = brTab.readLine()) != null) {
@@ -641,7 +651,7 @@ public class MetodosPrestamo {
             }
             brTab.close();
 
-            // === Importar estudiantes de diseño ===
+            // Importar estudiantes de diseño
             BufferedReader brDiseno = new BufferedReader(new FileReader("diseno.txt"));
             String lineaDis;
             while ((lineaDis = brDiseno.readLine()) != null) {
